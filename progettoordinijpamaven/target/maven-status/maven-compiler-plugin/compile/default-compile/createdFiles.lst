@@ -1,0 +1,13 @@
+it\progettoordinijpamaven\dao\ordine\OrdineDAOImpl.class
+it\progettoordinijpamaven\test\TestOrdini.class
+it\progettoordinijpamaven\model\Articolo.class
+it\progettoordinijpamaven\dao\EntityManagerUtil.class
+it\progettoordinijpamaven\dao\articolo\ArticoloDAOImpl.class
+it\progettoordinijpamaven\dao\categoria\CategoriaDAO.class
+it\progettoordinijpamaven\dao\IBaseDAO.class
+it\progettoordinijpamaven\dao\MyDaoFactory.class
+it\progettoordinijpamaven\model\Ordine.class
+it\progettoordinijpamaven\dao\articolo\ArticoloDAO.class
+it\progettoordinijpamaven\dao\ordine\OrdineDAO.class
+it\progettoordinijpamaven\model\Categoria.class
+it\progettoordinijpamaven\dao\categoria\CategoriaDAOImpl.class
