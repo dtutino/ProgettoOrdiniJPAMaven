@@ -3,8 +3,10 @@ package it.progettoordinijpamaven.dao.articolo;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import it.progettoordinijpamaven.model.Articolo;
+import it.progettoordinijpamaven.model.Categoria;
 
 public class ArticoloDAOImpl implements ArticoloDAO {
 	
@@ -50,6 +52,20 @@ public class ArticoloDAOImpl implements ArticoloDAO {
 			throw new Exception("Problema valore in input");
 		}
 		entityManager.remove(entityManager.merge(o));
+	}
+	
+	public List<Articolo> findAllByCategoria(Categoria categoriaInput) {
+		TypedQuery<Articolo> query = entityManager.createQuery("select a FROM Articolo a left join a.categorie c where c = :categoria", Articolo.class);
+		query.setParameter("categoria", categoriaInput);
+		return query.getResultList();
+	}
+	
+	public Long sumPriceByCategoria(Categoria categoriaInput) throws Exception {
+		TypedQuery<Long> query = entityManager.createQuery("select distinct sum(a.prezzoSingolo) FROM Articolo a join a.categorie c where c = :categoria", Long.class);
+		query.setParameter("categoria", categoriaInput);
+		
+		return query.getSingleResult();
+		
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import it.progettoordinijpamaven.dao.categoria.CategoriaDAO;
 import it.progettoordinijpamaven.model.Articolo;
 import it.progettoordinijpamaven.model.Categoria;
+import it.progettoordinijpamaven.model.Ordine;
 
 public interface CategoriaService {
 
@@ -21,6 +22,8 @@ public interface CategoriaService {
 	public void aggiungiArticolo(Categoria categoriaInstance, Articolo articoloInstance) throws Exception;
 	
 	public Categoria cercaPerDescrizione(String descrizione) throws Exception;
+	
+	public List<Categoria> cercaPerOrdine(Ordine ordineInstance) throws Exception;
 
 	// per injection
 	public void setCategoriaDAO(CategoriaDAO categoriaDAO);

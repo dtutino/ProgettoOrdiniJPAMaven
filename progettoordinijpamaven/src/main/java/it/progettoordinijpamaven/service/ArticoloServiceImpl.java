@@ -181,5 +181,24 @@ public class ArticoloServiceImpl implements ArticoloService {
 		}
 
 	}
+	
+	public Long totalePrezzoPerCategoria(Categoria categoriaInstance) throws Exception {
+		// questo è come una connection
+				EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+				try {
+
+					// uso l'injection per il dao
+					articoloDAO.setEntityManager(entityManager);
+
+					// eseguo quello che realmente devo fare
+					return articoloDAO.sumPriceByCategoria(categoriaInstance);
+
+				} catch (Exception e) {
+					entityManager.getTransaction().rollback();
+					e.printStackTrace();
+					throw e;
+				}
+	}
 
 }

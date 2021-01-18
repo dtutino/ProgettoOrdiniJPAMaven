@@ -21,12 +21,22 @@ public class Ordine {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
-	@Column(name = "nome-destinatario")
+	@Column(name = "nome_destinatario")
 	private String nomeDestinatario;
-	@Column(name = "indirizzo-spedizione")
+	@Column(name = "indirizzo_spedizione")
 	private String indirizzoSpedizione;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ordine")
 	private Set<Articolo> articoli = new HashSet<Articolo>();
+	
+	public Ordine() {
+		
+	}
+	
+	public Ordine(String nomeDestinatario, String indirizzoSpedizione) {
+		this.nomeDestinatario = nomeDestinatario;
+		this.indirizzoSpedizione = indirizzoSpedizione;
+	}
+	
 	public Long getId() {
 		return id;
 	}

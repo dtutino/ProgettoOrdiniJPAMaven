@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 
 import it.progettoordinijpamaven.dao.EntityManagerUtil;
 import it.progettoordinijpamaven.dao.ordine.OrdineDAO;
+import it.progettoordinijpamaven.model.Categoria;
 import it.progettoordinijpamaven.model.Ordine;
 
 public class OrdineServiceImpl implements OrdineService {
@@ -127,6 +128,26 @@ public class OrdineServiceImpl implements OrdineService {
 			throw e;
 		}
 
+	}
+	
+	@Override
+	public List<Ordine> trovaPerCategoria(Categoria categoriaInstance) throws Exception {
+		// questo è come una connection
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			// uso l'injection per il dao
+			ordineDAO.setEntityManager(entityManager);
+
+			// eseguo quello che realmente devo fare
+			return ordineDAO.findAllByCategoria(categoriaInstance);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			entityManager.close();
+		}
 	}
 
 }

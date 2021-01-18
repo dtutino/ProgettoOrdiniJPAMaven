@@ -27,7 +27,7 @@ public class Articolo {
 	private Long id;
 	@Column(name = "descrizione")
 	private String descrizione;
-	@Column(name = "prezzo-singolo")
+	@Column(name = "prezzo_singolo")
 	private int prezzoSingolo;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="ordine_id")
@@ -35,6 +35,15 @@ public class Articolo {
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinTable(name = "articolo_categoria", joinColumns = @JoinColumn(name = "articolo_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "categoria_id", referencedColumnName = "id"))
 	private Set<Categoria> categorie = new HashSet<Categoria>();
+	
+	public Articolo() {
+	}
+	
+	public Articolo(String descrizione, int prezzoSingolo) {
+		this.descrizione = descrizione;
+		this.prezzoSingolo = prezzoSingolo;
+	}
+	
 	public Long getId() {
 		return id;
 	}

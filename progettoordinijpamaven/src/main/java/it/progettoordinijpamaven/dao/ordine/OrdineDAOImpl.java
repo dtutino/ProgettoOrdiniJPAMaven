@@ -4,7 +4,10 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
+import it.progettoordinijpamaven.model.Articolo;
+import it.progettoordinijpamaven.model.Categoria;
 import it.progettoordinijpamaven.model.Ordine;
 
 public class OrdineDAOImpl implements OrdineDAO {
@@ -57,6 +60,18 @@ public class OrdineDAOImpl implements OrdineDAO {
 		// e poi il regista
 		entityManager.remove(entityManager.merge(o));
 
+	}
+	
+	public List<Ordine> findAllByCategoria(Categoria categoriaInstance) throws Exception {
+		if (categoriaInstance == null) {
+//			throw new Exception("Problema valore in input");
+		}
+		
+		TypedQuery<Ordine> query = entityManager.createQuery("select o FROM Ordine o left join fetch o.articoli a left join fetch a.categorie c where c = :categoria", Ordine.class);
+		query.setParameter("categoria", categoriaInstance);
+		return query.getResultList();
+			
+		
 	}
 
 }

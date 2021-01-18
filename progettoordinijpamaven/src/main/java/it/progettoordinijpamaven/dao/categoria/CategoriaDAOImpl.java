@@ -7,6 +7,7 @@ import javax.persistence.TypedQuery;
 
 import it.progettoordinijpamaven.model.Articolo;
 import it.progettoordinijpamaven.model.Categoria;
+import it.progettoordinijpamaven.model.Ordine;
 
 public class CategoriaDAOImpl implements CategoriaDAO {
 	
@@ -62,6 +63,14 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 				.setParameter(1, descrizioneInput);
 		
 		return query.getResultStream().findFirst().orElse(null);
+	}
+	
+	public List<Categoria> findAllByOrdine(Ordine ordineInstance) throws Exception {
+		TypedQuery<Categoria> query = entityManager
+				.createQuery("select c from Categoria c left join c.articoli a left join a.ordine o where o = :ordine", Categoria.class)
+				.setParameter("ordine", ordineInstance);
+		
+		return query.getResultList();
 	}
 
 }

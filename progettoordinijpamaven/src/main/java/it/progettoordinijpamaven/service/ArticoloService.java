@@ -22,6 +22,8 @@ public interface ArticoloService {
 	
 	public void creaECollegaArticoloECategoria(Articolo articoloTransientInstance, Categoria categoriaTransientInstance) throws Exception;
 
+	public Long totalePrezzoPerCategoria(Categoria categoriaInstance) throws Exception;
+	
 	// per injection
 	public void setArticoloDAO(ArticoloDAO articoloDAO);
 }

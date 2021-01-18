@@ -5,13 +5,18 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import it.progettoordinijpamaven.dao.EntityManagerUtil;
+import it.progettoordinijpamaven.dao.MyDaoFactory;
+import it.progettoordinijpamaven.dao.articolo.ArticoloDAO;
 import it.progettoordinijpamaven.dao.categoria.CategoriaDAO;
 import it.progettoordinijpamaven.model.Articolo;
 import it.progettoordinijpamaven.model.Categoria;
+import it.progettoordinijpamaven.model.Ordine;
 
 public class CategoriaServiceImpl implements CategoriaService {
 
 	private CategoriaDAO categoriaDAO;
+	
+	private ArticoloDAO articoloDAO;
 
 	@Override
 	public void setCategoriaDAO(CategoriaDAO categoriaDAO) {
@@ -107,30 +112,6 @@ public class CategoriaServiceImpl implements CategoriaService {
 	}
 
 	@Override
-	public void rimuovi(Categoria categoriaInstance) throws Exception {
-		// questo è come una connection
-		EntityManager entityManager = EntityManagerUtil.getEntityManager();
-
-		try {
-			// questo è come il MyConnection.getConnection()
-			entityManager.getTransaction().begin();
-
-			// uso l'injection per il dao
-			categoriaDAO.setEntityManager(entityManager);
-
-			// eseguo quello che realmente devo fare
-			categoriaDAO.delete(categoriaInstance);
-
-			entityManager.getTransaction().commit();
-		} catch (Exception e) {
-			entityManager.getTransaction().rollback();
-			e.printStackTrace();
-			throw e;
-		}
-
-	}
-
-	@Override
 	public void aggiungiArticolo(Categoria categoriaInstance, Articolo articoloInstance) throws Exception {
 		// questo è come una connection
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
@@ -163,6 +144,39 @@ public class CategoriaServiceImpl implements CategoriaService {
 			throw e;
 		}
 	}
+	
+	@Override
+	public void rimuovi(Categoria categoriaInstance) throws Exception {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		
+
+		try {
+
+			entityManager.getTransaction().begin();
+			
+			articoloDAO = MyDaoFactory.getArticoloDAOInstance();
+			articoloDAO.setEntityManager(entityManager);
+
+			List<Articolo> lista = articoloDAO.findAllByCategoria(categoriaInstance);
+			
+			for (Articolo articoloItem : lista) {
+				articoloItem.getCategorie().remove(categoriaInstance);
+				articoloDAO.update(articoloItem);
+			}
+		
+
+			categoriaDAO.setEntityManager(entityManager);
+			
+			categoriaDAO.delete(categoriaInstance);
+			
+			entityManager.getTransaction().commit();			
+		
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		}
+	}
 
 	@Override
 	public Categoria cercaPerDescrizione(String descrizione) throws Exception {
@@ -182,6 +196,25 @@ public class CategoriaServiceImpl implements CategoriaService {
 		} finally {
 			entityManager.close();
 		}
+	}
+	
+	public List<Categoria> cercaPerOrdine(Ordine ordineInstance) throws Exception {
+		// questo è come una connection
+				EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+				try {
+					// uso l'injection per il dao
+					categoriaDAO.setEntityManager(entityManager);
+
+					// eseguo quello che realmente devo fare
+					return categoriaDAO.findAllByOrdine(ordineInstance);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw e;
+				} finally {
+					entityManager.close();
+				}
 	}
 
 }
